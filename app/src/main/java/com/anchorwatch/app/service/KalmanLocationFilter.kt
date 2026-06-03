@@ -19,7 +19,7 @@ import kotlin.math.*
  *
  * Predict step (IMU rate ~50 Hz)
  *   • Updates vN/vE from rotated linear acceleration.
- *   • Applies velocity damping (τ ≈ 3 s) so wave-induced spikes decay quickly.
+ *   • Applies velocity damping (τ ≈ 1 s) for responsive drag detection.
  *   • Does NOT update lat/lon — position only moves on GPS updates.
  *   • Grows velocity covariance only (position covariance unchanged).
  *
@@ -42,23 +42,32 @@ class KalmanLocationFilter {
         private const val EARTH_R = 6_371_000.0
 
         // Innovation gate — distance in metres beyond which a GPS fix is rejected
-        private const val GATE_NORMAL_M      = 25.0   // tight: catches 5-10 m GPS spikes
-        private const val GATE_WIDE_M        = 80.0   // recovery gate after repeated rejects
+        // Optimized for responsive anchor drag detection:
+        //   • GATE_NORMAL_M: Increased from 25→40m to accept real boat movement
+        //     while still rejecting random GPS spikes
+        //   • GATE_WIDE_M: Increased from 80→100m for recovery after signal loss
+        private const val GATE_NORMAL_M      = 40.0   // Allows faster response to movement
+        private const val GATE_WIDE_M        = 100.0  // Recovery gate after repeated rejects
         private const val MAX_CONSECUTIVE_REJECTS = 4 // widen gate after this many rejects
 
         // Velocity damping: decay constant in seconds.
         // vN *= exp(-dt / TAU_S) each predict step.
-        // At anchor (wave rocking) this keeps velocity near zero between fixes.
-        private const val VEL_DAMPING_TAU_S  = 3.0
+        // Optimized from 3.0s → 1.0s for:
+        //   • Faster detection of anchor drag (velocity becomes visible sooner)
+        //   • Better tracking of changing speeds
+        //   • Still suppresses wave-induced rocking (1s ~ 2-3 wave periods)
+        private const val VEL_DAMPING_TAU_S  = 1.0    // Faster response to drag
 
         // Process noise added to velocity covariance each predict step
         private const val VEL_NOISE_MS       = 0.05   // m/s std-dev per second
 
         // GPS measurement noise scale (accuracy is 1-sigma; we scale slightly)
-        private const val GPS_NOISE_SCALE    = 1.2
+        // Optimized from 1.2 → 1.0 to trust GPS measurements more directly
+        // This reduces lag by making the filter respond faster to GPS fixes
+        private const val GPS_NOISE_SCALE    = 1.0    // Trust GPS more
     }
 
-    // ── State ─────────────────────────────────────────────────────────────────
+    // ── State ──────────────────────────────────────────────────────────
     private var lat = 0.0   // degrees — only updated on GPS fix
     private var lon = 0.0   // degrees — only updated on GPS fix
     private var vN  = 0.0   // m/s north — updated by IMU + GPS
@@ -86,7 +95,7 @@ class KalmanLocationFilter {
     var acceptedCount = 0; private set
     var rejectedCount = 0; private set
 
-    // ── Public API ────────────────────────────────────────────────────────────
+    // ── Public API ─────────────────────────────────────────────────────────
 
     /**
      * IMU predict step.
@@ -211,7 +220,7 @@ class KalmanLocationFilter {
         AnchorLogger.log(TAG, "RESET  accepted=$acceptedCount  rejected=$rejectedCount")
     }
 
-    // ── Private ───────────────────────────────────────────────────────────────
+    // ── Private ─────────────────────────────────────────────────────────
 
     private fun initialise(raw: Location): Location {
         lat = raw.latitude; lon = raw.longitude
