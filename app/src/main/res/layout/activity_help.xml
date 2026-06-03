@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <TextView
+        android:id="@+id/tvHelpContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:lineSpacingMultiplier="1.4"
+        android:textSize="15sp"
+        android:text="Help content coming soon.\n\nThis section will explain how to use AnchorWatch — including setting your alarm radius, configuring SMS alerts, using the map, and getting the best GPS results." />
+
+</ScrollView>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView android:text="GPS SETTINGS"
+            android:textColor="#888888" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView android:text="GPS Refresh Interval (seconds)"
+            android:textColor="#AAAAAA" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/etGpsRefresh"
+            android:inputType="number" android:textColor="#FFFFFF"
+            android:backgroundTint="#444444"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView android:text="ALARM SETTINGS"
+            android:textColor="#888888" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView android:text="Anchor Alarm Radius (metres)"
+            android:textColor="#AAAAAA" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/etAlarmRadius"
+            android:inputType="number" android:textColor="#FFFFFF"
+            android:backgroundTint="#444444"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView android:text="MAP TRACK"
+            android:textColor="#888888" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView android:text="Minimum distance between track points (metres)"
+            android:textColor="#AAAAAA" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/etTrackMinDistance"
+            android:inputType="number" android:textColor="#FFFFFF"
+            android:backgroundTint="#444444"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView android:text="SMS ALERT"
+            android:textColor="#888888" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView android:text="Phone number to receive drag alarm SMS"
+            android:textColor="#AAAAAA" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/etSmsNumber"
+            android:inputType="phone" android:textColor="#FFFFFF"
+            android:backgroundTint="#444444"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView android:text="SMS Position Request Keyword"
+            android:textColor="#AAAAAA" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/etSmsKeyword"
+            android:inputType="text" android:textColor="#FFFFFF"
+            android:backgroundTint="#444444"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+
+        <Button android:id="@+id/btnTestSms"
+            android:text="Send Test SMS and Call"
+            android:backgroundTint="#2E7D32"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView android:text="ALARM SOUND"
+            android:textColor="#888888" android:textSize="12sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView android:id="@+id/tvAlarmSound"
+            android:text="No sound selected"
+            android:textColor="#FFFFFF" android:textSize="14sp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+
+        <Button android:id="@+id/btnAlarmSound"
+            android:text="Choose Alarm Sound"
+            android:backgroundTint="#1565C0"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Mapbox section — hidden until user has set a token via the map screen -->
+        <LinearLayout
+            android:id="@+id/layoutMapbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView android:text="SATELLITE MAP"
+                android:textColor="#888888" android:textSize="12sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:text="Your Mapbox access token (starts with pk.)"
+                android:textColor="#AAAAAA" android:textSize="12sp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <EditText android:id="@+id/etMapboxToken"
+                android:inputType="text"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#444444"
+                android:hint="pk.eyJ1..."
+                android:textColorHint="#666666"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"/>
+
+        </LinearLayout>
+
+        <Button android:id="@+id/btnSave"
+            android:text="Save Settings"
+            android:backgroundTint="#E65100"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</ScrollView>
