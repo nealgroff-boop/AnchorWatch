@@ -58,10 +58,10 @@ class GpsService : Service() {
     var refreshIntervalMs: Long  = 3000L
     var accuracyThresholdM: Float = 15f
 
-    // ── EKF ──────────────────────────────────────────────────────────────────
+    // ── EKF ───────────────────────────────────────────────────────────
     private val ekf = KalmanLocationFilter()
 
-    // ── IMU state ─────────────────────────────────────────────────────────────
+    // ── IMU state ──────────────────────────────────────────────────────────
     // Rotation matrix (3×3) from device frame → world (NED) frame, from
     // TYPE_ROTATION_VECTOR.  Initialised to identity.
     private val rotationMatrix = FloatArray(9) { if (it % 4 == 0) 1f else 0f }
@@ -104,7 +104,7 @@ class GpsService : Service() {
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
     }
 
-    // ── GNSS status ───────────────────────────────────────────────────────────
+    // ── GNSS status ────────────────────────────────────────────────────────
     private var lastSatLogTime = 0L
     private val gnssStatusCallback = object : GnssStatus.Callback() {
         override fun onSatelliteStatusChanged(status: GnssStatus) {
@@ -135,7 +135,7 @@ class GpsService : Service() {
         }
     }
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    // ── Lifecycle ───────────────────────────────��─────────────────────────
 
     override fun onCreate() {
         super.onCreate()
@@ -189,7 +189,7 @@ class GpsService : Service() {
         Log.d(TAG, "IMU sensors registered (rotation vector + linear acceleration)")
     }
 
-    // ── GPS updates ───────────────────────────────────────────────────────────
+    // ── GPS updates ────────────────────────────────────────────────────────
 
     private fun startLocationUpdates() {
         val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, refreshIntervalMs)
@@ -216,7 +216,7 @@ class GpsService : Service() {
                     gpsLossRunning = false
                     if (gpsLossCounter > worstGpsGapSeconds.value) worstGpsGapSeconds.value = gpsLossCounter
                     AnchorLogger.log(TAG, "GPS-RESTORED  outage=${gpsLossCounter}s")
-                    gpsLossCounter = 0; gpsLotSeconds_reset()
+                    gpsLossCounter = 0; gpsLostSeconds_reset()
                 }
                 firstFixAcquired = true
                 radialVelocityMs.value = ekf.radialVelocityMs.toFloat()
@@ -239,9 +239,9 @@ class GpsService : Service() {
         }
     }
 
-    private fun gpsLotSeconds_reset() { gpsLostSeconds.value = 0 }
+    private fun gpsLostSeconds_reset() { gpsLostSeconds.value = 0 }
 
-    // ── Public API ────────────────────────────────────────────────────────────
+    // ── Public API ──��───────────────────────────────────────────────────────
 
     /**
      * Reset the EKF.  Call when anchor is cleared so the new session starts
